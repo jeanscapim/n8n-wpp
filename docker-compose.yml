@@ -13,20 +13,6 @@ services:
       - "6379:6379"
     restart: unless-stopped
 
-  postgres:
-    image: postgres:latest
-    container_name: postgres
-    platform: linux/amd64
-    environment:
-      POSTGRES_USER: ${DEFAULT_VALUE}
-      POSTGRES_PASSWORD: ${DEFAULT_VALUE}
-      POSTGRES_DB: ${DEFAULT_VALUE}
-    ports:
-      - "5432:5432"
-    volumes:
-      - pgdata:/var/lib/postgresql/data
-    restart: unless-stopped
-
   waha:
     image: devlikeapro/waha:latest
     container_name: waha
@@ -59,7 +45,6 @@ services:
     restart: unless-stopped
 
 volumes:
-  pgdata:
   waha_sessions:
   waha_media:
   n8n_data:
