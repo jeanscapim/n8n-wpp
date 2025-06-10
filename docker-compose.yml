@@ -7,8 +7,8 @@ services:
     platform: linux/amd64
     command: redis-server --requirepass default
     environment:
-      REDIS_USER: ${DEFAULT_VALEU}
-      REDIS_PASSWORD: ${DEFAULT_VALEU}
+      REDIS_USER: ${DEFAULT_VALUE}
+      REDIS_PASSWORD: ${DEFAULT_VALUE}
     ports:
       - "6379:6379"
     restart: unless-stopped
@@ -18,9 +18,9 @@ services:
     container_name: postgres
     platform: linux/amd64
     environment:
-      POSTGRES_USER: ${DEFAULT_VALEU}
-      POSTGRES_PASSWORD: ${DEFAULT_VALEU}
-      POSTGRES_DB: ${DEFAULT_VALEU}
+      POSTGRES_USER: ${DEFAULT_VALUE}
+      POSTGRES_PASSWORD: ${DEFAULT_VALUE}
+      POSTGRES_DB: ${DEFAULT_VALUE}
     ports:
       - "5432:5432"
     volumes:
