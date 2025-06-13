@@ -79,13 +79,14 @@ Clique para esperar um evento de teste e envie uma mensagem para o seu número c
 
 Após receber os dados, adicione um node "Set" conectado ao "Webhook" , salve e crie os seguintes campos:
 - Renomei para "Dados"
-- session = `````` {{ $json.body.session }} ``````
+- session = ```{{ $json.body.session }}```
 - chatId = ```{{ $json.body.payload.from }}```
 - pushName = ```{{ $json.body.payload._data.Info.PushName }}```
 - payload_id = ```{{ $json.body.payload.id }}```
 - event = ```{{ $json.body.event }}```
 - message = ```{{ $json.body.payload.body }}``` 
 - fromMe = ```{{ $json.body.payload.fromMe }}```
+
 Realize um teste clicando em "Execute step"
 
 Após receber os dados, adicione um node "Switch" em frente ao node "Set", salve e crie as seguintes regras:
