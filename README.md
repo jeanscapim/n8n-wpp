@@ -1,129 +1,232 @@
-# Integrando o WhatsApp com o Gemini e ao Google Calendar através do N8N
+# 🤖 Agente de IA para WhatsApp com N8N
 
-## Introdução
+## 📋 Visão Geral
 
-Este tutorial irá guiar você através do processo de instalação e configuração da nossa estrutura para criação de um Agente de IA Local, incluindo os componentes:
+Este guia te ajudará a criar um assistente virtual inteligente que responde automaticamente mensagens no WhatsApp. Nosso agente utiliza:
 
-- **WAHA**: API de WhatsApp gratuita
-- **N8N**: Plataforma de automação
-- **Redis**: Banco de dados em memória para registro de chats
+- **🔗 WAHA**: Conecta seu WhatsApp à automação
+- **⚡ N8N**: Plataforma que automatiza todo o processo
+- **🧠 Google Gemini**: Inteligência artificial para respostas
+- **💾 Redis**: Memória para conversas contextuais
 
-## Pré-requisitos
+---
 
-- Ter o Docker Compose ou Docker Desktop instalado
-- Sistema operacional Windows 10, Windows 11 ou MacOs
+## 🛠️ Pré-requisitos
 
-## Passo a Passo
+Antes de começar, certifique-se de ter:
 
-### 1. Faça o download deste repositório em seu computador
-Acesse a opção "<> Code" e escolha a opção "Download ZIP"
+- [ ] **Docker Desktop** ou **Docker Compose** instalado
+- [ ] **Windows 10/11** ou **macOS**
+- [ ] **Conta Google** (para API do Gemini - gratuita)
+- [ ] **Número de WhatsApp secundário** para testes
 
-### 2. Extraia os arquivos e acesse a pasta raiz do projeto
-Certifique-se estar na mesma pasta do arquivo "docker-compose.yml"
+> ⚠️ **Importante**: Use um número secundário para testes, não seu WhatsApp pessoal!
 
-### 3. Abra um terminal na pasta raiz
-Digite o comando: ```docker-compose up -d``` e aguarde o docker baixar e subir os containers dos aplicativos
+---
 
-*Esse procedimento irá baixar e instalar todos os programas localmente em seu computador*
+## 🚀 Instalação e Execução
 
-### 4. Acessando os programas:
-Você poderá acessar os programas no seu navegador clicando no link do container através do seu aplicativo Docker Desktop ou através do passo a passo abaixo:
+### Passo 1: Download do Projeto
+1. Acesse o repositório do projeto
+2. Clique em **"<> Code"** → **"Download ZIP"**
+3. Extraia os arquivos em uma pasta de sua escolha
+4. Navegue até a pasta que contém o arquivo `docker-compose.yml`
 
-#### 4.1 Configurando o Waha (Parte 1)
+### Passo 2: Inicialização
+1. Abra o **terminal/prompt** na pasta do projeto
+2. Execute o comando:
+   ```bash
+   docker-compose up -d
+   ```
+   *Esse comando iniciará localmente os serviços: WAHA, N8N e Redis.*
+3. Aguarde o download e instalação (pode demorar alguns minutos)
 
-Acesse o portal através do link http://localhost:3000/dashboard/
+---
 
-Na área de "Sessions" clique em "Start" para inicializar o serviço
+### 🌐 Acesso aos serviços
 
-Conecte seu WhatsApp no WAHA através do QR Code gerado
+| Serviço        | URL                                                                |
+| -------------- | ------------------------------------------------------------------ |
+| WAHA Dashboard | [http://localhost:3000/dashboard](http://localhost:3000/dashboard) |
+| N8N Portal     | [http://localhost:5678](http://localhost:5678)                     |
 
-#### 4.2 Configurando o N8N
+---
 
-Acesse o portal através do link http://localhost:5678/setup e realize o cadastro do seu perfil
+### ⚙️ Configuração
 
-Instale os nodes do WAHA no N8N clicando em:
-- Clique em "Settings"
-- Clique em "Community nodes"
-- Clique em "Install a community node"
-- No campo "npm Package Name" digite: ```n8n-nodes-waha```
-- Aceite os termos
-- Clique em "Install"
+### 🔧 1. Configurando o WAHA (Conexão WhatsApp)
 
-#### 4.3 Criando um workflow no N8N (Parte 1)
+1. **Acesse**: http://localhost:3000/dashboard/
+2. Na seção **"Sessions"**, clique em **"Start"**
+3. **Escaneie o QR Code** com seu WhatsApp
+4. Aguarde a confirmação da conexão
 
-Acesse o portal através do link: http://localhost:5678/home/workflows
+### 🔧 2. Configurando o N8N (Automação)
 
-Na página inicial do N8N crie um novo workflow
+1. **Acesse**: http://localhost:5678/setup
+2. **Crie sua conta** no N8N
+3. **Instale o plugin WAHA**:
+   - Vá em **Settings** → **Community nodes** → **Install a community node**
+   - Digite: `n8n-nodes-waha`
+   - Aceite os termos e clique em **"Install"**
 
-Adicione um nome para o seu workflow
+### 🔧 3. Criando o Workflow Inteligente
 
-Adicione um trigger de "Webhook" e o configure da seguinte forma:
-- Em "HTTP Method" selecione a opção "POST"
-- Em "Path" adicione o texto "webhook"
-- Copie a URL de teste que aparece logo acima ```http://host.docker.internal:5678/webhook-test/webhook```
+#### 3.1 Configuração Inicial
+1. **Acesse**: http://localhost:5678/home/workflows
+2. Clique em **"+ Novo Workflow"**
+3. Dê um nome ao seu workflow (ex: "Assistente WhatsApp")
 
-#### 4.4 Configurando o Waha (Parte 2)
-Retorne para  o portal através do link http://localhost:3000/dashboard
+#### 3.2 Configurando o Webhook (Receptor de Mensagens)
+1. Adicione um nó **"Webhook"**
+2. Configure:
+   - **HTTP Method**: POST
+   - **Path**: webhook
+3. **Copie a URL de teste** que aparece (será algo como: http://host.docker.internal:5678/webhook-test/webhook)
 
-Na área de "Sessions" clique em "Configuration" para adicionar o webhook
-- Clique em "+ Webhook" para adicionar um novo webhook, cole a URL copiada
-- Em "Events" deixe apenas o "message"
-- Clique em "Update"
+#### 3.3 Conectando WAHA ao N8N
+1. **Volte ao WAHA**: http://localhost:3000/dashboard
+2. Na seção **"Sessions"**, clique em **"Configuration"**
+3. Clique em **"+ Webhook"**
+4. **Cole a URL** copiada do N8N
+5. Em **"Events"**, deixe apenas **"message"** marcado
+6. Clique em **"Update"**
 
-#### 4.5 Criando um workflow no N8N (Parte 2)
+#### 3.4 Testando a Conexão
+1. **No N8N**, clique em **"Listen for Test Event"** no nó Webhook
+2. **Envie uma mensagem** para o número conectado no WAHA (use outro número!)
+3. Verifique se os dados chegaram no N8N
 
-Retorne para o portal através do link: http://localhost:5678
+### 🔧 4. Configurando a Inteligência Artificial
 
-Clique para esperar um evento de teste e envie uma mensagem para o seu número conectado no WAHA
-- Não utilize o seu número pessoal, envie através de OUTRO NÚMERO, por exemplo, de algum familiar
+#### 4.1 Processamento de Dados
+Adicione um nó **"Set"** após o Webhook e configure:
+```
+Nome: "Dados"
+Campos:
+- session = {{ $json.body.session }}
+- chatId = {{ $json.body.payload.from }}
+- pushName = {{ $json.body.payload._data.Info.PushName }}
+- payload_id = {{ $json.body.payload.id }}
+- event = {{ $json.body.event }}
+- message = {{ $json.body.payload.body }}
+- fromMe = {{ $json.body.payload.fromMe }}
+```
+Realize um teste clicando em **"Execute step"**
 
-Após receber os dados, adicione um node "Set" conectado ao "Webhook" , salve e crie os seguintes campos:
-- Renomei para "Dados"
-- session = ```{{ $json.body.session }}```
-- chatId = ```{{ $json.body.payload.from }}```
-- pushName = ```{{ $json.body.payload._data.Info.PushName }}```
-- payload_id = ```{{ $json.body.payload.id }}```
-- event = ```{{ $json.body.event }}```
-- message = ```{{ $json.body.payload.body }}``` 
-- fromMe = ```{{ $json.body.payload.fromMe }}```
+#### 4.2 Filtro de Mensagens
+Adicione um nó **"Switch"** com a condição:
+- Se `{{ $json.event }}` igual a `"message"`
 
-Realize um teste clicando em "Execute step"
+#### 4.3 Configurando o Google Gemini
+1. **Obtenha sua API Key**: https://aistudio.google.com/app/apikey
+2. Adicione o nó **"Google Gemini"** com:
+   - **API Key**: Cole sua chave gratuita
+   - **Model**: `models/gemini-2.0-flash`
+   - **Temperature**: 0.4
 
-Após receber os dados, adicione um node "Switch" em frente ao node "Set", salve e crie as seguintes regras:
-- Neste switch apenas faça a comparação, se o ```{{ $json.event }}``` for igual a "message"
+#### 4.4 Configurando o Agente IA
+Adicione o nó **"AI Agent"** com:
+- **Prompt**: `{{ $json.message }}`
+- **System Message**: 
+  ```
+  Você é uma esteticista especializada em manicure e pedicure. 
+  Seja prestativa, profissional e amigável em suas respostas.
+  ```
 
-Adicione o node do "AI Agent" e faça as configurações:
-- Em "Source for Prompt" selecione a oção "Define below"
-- Em "Prompt" adicione a mensagem do "Switch" ```{{ $json.message }}```
-- Em "System Message" adicione o prompt ```Você é uma esteticista especializada em manicure e pedicure```
+#### 4.5 Memória de Conversas (Redis)
+Adicione o nó **"Redis Chat Memory"** com:
+- **Password**: `default`
+- **Host**: `host.docker.internal`
+- **Session ID**: `{{ $('Dados').item.json.chatId }}`
+- **TTL**: `3600` (1 hora)
+- **Context Window**: `10` mensagens
 
-Adicione o node do "Google Gemini" em baixo ao node "AI Agent" e adicione os seguintes parametros:
-- Em "Credential to connect with" clique em "+ Create a new credential"
-- Pegue a chave de API gratuita do Google Gemini aqui: https://aistudio.google.com/app/apikey
-- Adicione a chave gerada no campo "API KEY"
-- Altere o modelo em "Model" para o modelo "models/gemini-2.0-flash"
-- Em "Options" selecione a opçao "Sampling Temperature" com o valor 0,4
+### 🔧 5. Enviando Respostas
 
-Adicione o node do "Redis Chat Memory" em baixo ao node "AI Agent" e adicione os seguintes parametros:
-- A configuração do node do Redis Chat Memory é a seguinte:
-- Em "Password" adicione o texto "default"
-- Em "Host" adicione o texto "host.docker.internal"
-Configure o "Session id" selecionando "Define Beloow"
-- Em "Key" adicione o ID do chat dos Dados ```{{ $('Dados').item.json.chatId }}```
-- Em "Session time to live" adicione o número "3600"
-- Em "Context Window Length" adicione o número "10"
+#### 5.1 Marcar como Visualizada
+Adicione o nó **"WAHA Send Seen"** com:
+- **Host URL**: `http://host.docker.internal:3000`
+- **API KEY**: remova o conteúdo do campo
+- **Session**: `{{ $('Dados').item.json.session }}`
+- **Chat ID**: `{{ $('Dados').item.json.chatId }}`
+- **Message ID**: `{{ $('Dados').item.json.payload_id }}`
 
-Adicione o node do Waha "Send Seen" em frente ao node "AI Agent" e adicione as seguintes configurações:
-- Em "Parameters" clique em "+ Create a new credential"
-- Em "Host URL" adicione ```http://host.docker.internal:3000```
-- Em API KEY" remova o conteúdo
-- Em "Session" adicione ```{{ $('Dados').item.json.session }}```
-- Em "Chat Id" adicione ```{{ $('Dados').item.json.chatId }}```
-- Em "Message Id" adicione ```{{ $('Dados').item.json.payload_id }}```
-- Em "Participant" deixe vazio
+#### 5.2 Enviar Resposta
+Adicione o nó **"WAHA Send Text Message"** com:
+- **Session**: `{{ $('Dados').item.json.session }}`
+- **Chat ID**: `{{ $('Dados').item.json.chatId }}`
+- **Reply To**: remova o conteúdo do campo
+- **Text**: `{{ $('AI Agent').item.json.output }}`
 
-Adicione o node do Waha "Send a text message" em frente ao node do  Waha "Send Seen" e adicione as seguintes configurações:
-- Em "Session" adicione ```{{ $('Dados').item.json.session }}```
-- Em "Chat Id" adicione ```{{ $('Dados').item.json.chatId }}```
-- Em "Reply To" deixe vazio
-- Em "Text" customize a sua resposta combinando a resposta da AI ```{{ $('AI Agent').item.json.output }}```
+---
+
+## ✅ Testando o Sistema
+
+1. **Ative o workflow** no N8N
+2. **Envie uma mensagem** de outro número para o WhatsApp conectado
+3. **Aguarde a resposta** automática do agente IA
+4. **Teste diferentes perguntas** para verificar a personalidade configurada
+
+---
+
+## 🎯 Dicas de Personalização
+
+### Personalizando o Agente
+Modifique o **System Message** do AI Agent para diferentes especialidades:
+
+```
+🏥 Atendimento Médico:
+"Você é um assistente de uma clínica médica. Seja educado e direcione para agendamentos."
+
+🍕 Restaurante:
+"Você é um garçom virtual de uma pizzaria. Ajude com pedidos e informações do cardápio."
+
+🛒 E-commerce:
+"Você é um consultor de vendas online. Ajude clientes com dúvidas sobre produtos."
+```
+
+### Melhorando as Respostas
+- **Temperature baixa (0.2-0.4)**: Respostas mais focadas
+- **Temperature alta (0.7-0.9)**: Respostas mais criativas
+- **Context Window maior**: Memória mais longa das conversas
+
+---
+
+## 🔧 Solução de Problemas
+
+### Problemas Comuns
+
+| Problema | Solução |
+|----------|---------|
+| WhatsApp desconecta | Reconecte escaneando o QR Code novamente |
+| N8N não recebe mensagens | Verifique se o webhook está configurado corretamente |
+| IA não responde | Verifique sua API Key do Google Gemini |
+| Erro de conexão Redis | Reinicie os containers: `docker-compose restart` |
+
+### Logs e Monitoramento
+- **N8N**: Veja execuções em http://localhost:5678/executions
+- **WAHA**: Monitor em http://localhost:3000/dashboard
+- **Docker**: Use `docker-compose logs` para ver logs detalhados
+
+---
+
+## 🎉 Próximos Passos
+
+Agora que seu agente está funcionando, você pode:
+
+1. **📅 Integrar com Google Calendar** para agendamentos
+2. **📊 Adicionar analytics** para métricas de conversas  
+3. **🔄 Criar workflows múltiplos** para diferentes tipos de negócio
+4. **📱 Conectar múltiplos WhatsApp** para escalar o atendimento
+
+---
+
+## 📞 Suporte
+
+Se encontrar dificuldades:
+- Verifique se todos os containers estão rodando: `docker ps`
+- Reinicie o sistema: `docker-compose down && docker-compose up -d`
+- Consulte os logs específicos de cada serviço
+
+**🎯 Pronto! Seu agente de IA está funcionando e respondendo automaticamente no WhatsApp!**
