@@ -54,14 +54,14 @@ Antes de começar, certifique-se de ter:
 
 ### ⚙️ Configuração
 
-### 🔧 1. Configurando o WAHA (Conexão WhatsApp)
+### 1. Configurando o WAHA (Conexão WhatsApp)
 
 1. **Acesse**: http://localhost:3000/dashboard/
 2. Na seção **"Sessions"**, clique em **"Start"**
 3. **Escaneie o QR Code** com seu WhatsApp
 4. Aguarde a confirmação da conexão
 
-### 🔧 2. Configurando o N8N (Automação)
+### 2. Configurando o N8N (Automação)
 
 1. **Acesse**: http://localhost:5678/setup
 2. **Crie sua conta** no N8N
@@ -70,7 +70,7 @@ Antes de começar, certifique-se de ter:
    - Digite: `n8n-nodes-waha`
    - Aceite os termos e clique em **"Install"**
 
-### 🔧 3. Criando o Workflow Inteligente
+### 3. Criando o Workflow Inteligente
 
 #### 3.1 Configuração Inicial
 1. **Acesse**: http://localhost:5678/home/workflows
@@ -97,7 +97,7 @@ Antes de começar, certifique-se de ter:
 2. **Envie uma mensagem** para o número conectado no WAHA (use outro número!)
 3. Verifique se os dados chegaram no N8N
 
-### 🔧 4. Configurando a Inteligência Artificial
+### 4. Configurando a Inteligência Artificial
 
 #### 4.1 Processamento de Dados
 Adicione um nó **"Set"** após o Webhook e configure:
@@ -142,7 +142,7 @@ Adicione o nó **"Redis Chat Memory"** com:
 - **TTL**: `3600` (1 hora)
 - **Context Window**: `10` mensagens
 
-### 🔧 5. Enviando Respostas
+### 5. Enviando Respostas
 
 #### 5.1 Marcar como Visualizada
 Adicione o nó **"WAHA Send Seen"** com:
