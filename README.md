@@ -151,6 +151,7 @@ Adicione o nó **"WAHA Send Seen"** com:
 - **Session**: `{{ $('Dados').item.json.session }}`
 - **Chat ID**: `{{ $('Dados').item.json.chatId }}`
 - **Message ID**: `{{ $('Dados').item.json.payload_id }}`
+- **Participant**: remova o conteúdo do campo
 
 #### 5.2 Enviar Resposta
 Adicione o nó **"WAHA Send Text Message"** com:
