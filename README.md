@@ -1,4 +1,4 @@
-# Integrando o WhatsApp ao Google Calendar através do N8N
+# Integrando o WhatsApp com o Gemini e ao Google Calendar através do N8N
 
 ## Introdução
 
